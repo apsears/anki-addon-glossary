@@ -6,8 +6,8 @@ from anki.exporting import TextCardExporter
 import re
 import os
 
-TARGETFOLDER = './s3'
-# S3BUCKET = os.environ['S3BUCKET']
+TARGETFOLDER = 's3'
+S3BUCKET = os.environ['S3BUCKET']
 NCARDS = 20
 
 class MyTextCardExporter(TextCardExporter):
@@ -132,6 +132,12 @@ img {
             cardList.append(self.col.sched._getRevCard())
         cardList = filter(lambda x: x, cardList)
 
+        # See customstudy.py
+        # did = self.mw.col.decks.newDyn(_("Custom Study Session"))
+        # dyn = self.mw.col.decks.get(did)
+        # if not self.mw.col.sched.rebuildDyn():
+        #     return showWarning(_("No cards matched the criteria you provided."))
+
 
         return sorted(cardList, key=lambda x: x.template(), reverse=False)
 
@@ -140,7 +146,8 @@ def exportScheduled(self):
     path = os.path.join(TARGETFOLDER,'scheduledVocab.html')
     file = open(path, "wb")
     exp.doExport(file)
-    # os.system("aws s3 sync --acl public-read %s s3://%s" % (TARGETFOLDER, S3BUCKET))
+    cmd = "aws s3 sync --acl public-read %s s3://%s" % (TARGETFOLDER, S3BUCKET)
+    os.system(cmd)
     return "success"
 
 
