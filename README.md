@@ -1,29 +1,23 @@
 # anki-addon-glossary
-Export an Anki desk as an Html Glossary
+Export an Anki desk as an Html Glossary automatically when syncing. 
 
 It is based on https://ankiweb.net/shared/info/2751403243
 
-## Install
-copy the py file into Anki's add-on folder and restart Anki, or use the Anki's tools, Addons Browse & install menu.
-See here: https://ankiweb.net/shared/info/156019013
+## Description
 
+Anki is a program for optimizing flashcard studying.  This project creates and exports an HTML table with your next N scheduled Anki cards, to facilitate offline studying and cramming.
 
-## Usage
-1. File menu, Export. Choose Export deck as Html Glossary and choose the desk
-2. Save the file into Anki's media folder (on my Linux, this is Documents\Anki\User 1\collection.media)
-3. Open the file in a browser
+It can also upload this table to an Amazon S3 bucket to ensure it is available for you on the go.
 
-# Customization of the output
-create a custom.css in the directory of the htm file.
+## Setup
 
-For example, if you want that the first column will be the question and the second be the answer, use this custom.css file:
-```
-.Question{
-    float: left;
- 
-}
-.Answer{
-    float: left;
- 
-}
-```
+Place ExportScheduled.py in your Anki addon folder, where it will be executed every time Anki syncs to AnkiWeb -- generally upon opening and closing.
+
+## S3 Setup
+
+If you wish to export the vocabulary table to an S3 bucket, take the following additional steps:
+
+1) Install amazon cli tools: "pip install awscli"  
+2) Configure S3 uploads with your Secret Keys: "aws configure"  
+3) Create a system environment variable named S3BUCKET with then name of your bucket, like "MyVocabBucket"  
+4) Uncomment the environment variable retrieval at the beginning and the shell call at the end of ExportScheduled.py  
